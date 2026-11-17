@@ -8,35 +8,44 @@ module's playbook, checklists, and memory before touching it.
 ```mermaid
 flowchart TB
     classDef lead fill:#FF6B35,stroke:#1A1A2E,color:#1A1A2E,font-weight:bold
+    classDef strong fill:#118AB2,stroke:#1A1A2E,color:#FFFFFF,font-weight:bold
     classDef mid fill:#FFD166,stroke:#1A1A2E,color:#1A1A2E
     classDef low fill:#06D6A0,stroke:#1A1A2E,color:#1A1A2E
-    classDef idea fill:#118AB2,stroke:#1A1A2E,color:#FFFFFF,font-weight:bold
     classDef mem fill:#073B4C,stroke:#FFD166,color:#FFFFFF
-    L[Lead · strongest model<br/>design, protocol, security, review]:::lead
-    B[Builder · mid model<br/>implements one module task]:::mid
-    H[Helper · cheapest model<br/>boilerplate, docs, test scaffolds, searches]:::low
-    M[(Memory<br/>decisions · gotchas · per-module notes)]:::mem
-    I[Idea agent · strong model<br/>what next, new options, new ideas]:::idea
-    L --> B --> H
-    L --> I
-    I --> H
-    L <--> M
-    B <--> M
-    I <--> M
+    L[Lead · strongest model<br/>coordination, hard design, final review]:::lead
+    I[Idea agent<br/>what next, new options]:::strong
+    S[Security reviewer<br/>threats, keys, access checks]:::strong
+    D[Design reviewer<br/>reads designs as a builder would]:::strong
+    B[Builder<br/>implements one module task]:::mid
+    T[Test agent<br/>sim scenarios, failure tests]:::mid
+    W[Docs agent<br/>playbooks, README, changelog]:::low
+    H[Helper<br/>boilerplate, searches]:::low
+    M[(Memory<br/>one file per agent + shared decisions)]:::mem
+    L --> I & S & D
+    L --> B & T
+    B --> H
+    T --> H
+    L --> W
+    I & S & D & B & T & W <--> M
 ```
+
+Colors: orange = lead · blue = strong model · yellow = mid model · green = cheapest model.
 
 ## Who does what
 
-| Tier | Use for | Never for |
-|------|---------|-----------|
-| Lead (strongest) | Anything touching identity, session, membership, link failover; design changes; final review | Renames, formatting |
-| Builder (mid) | A scoped task inside one module with a written plan | Changing a module's public interface on its own |
-| Helper (cheapest) | Boilerplate, doc updates, test scaffolds, finding files | Security or protocol logic |
+| Agent | Tier | Use for | Never for |
+|-------|------|---------|-----------|
+| Lead | Strongest | Coordination; anything touching identity, session, membership, failover; design changes; final review | Renames, formatting |
+| Idea agent | Strong | Keeping `NEXT-UPDATES.md` and `05-vision.md` current; researching new options | Editing code or approved design docs |
+| Security reviewer | Strong | Reviewing any change that trips the advanced checklist; keeping the threat table current | Writing the feature it reviews |
+| Design reviewer | Strong | Reading a design or plan cold and listing what a builder would still have to guess | Rewriting the design itself |
+| Builder | Mid | A scoped task inside one module with a written plan | Changing a module's public interface on its own |
+| Test agent | Mid | `sim` scenarios, link-drop and host-loss tests, a failing test for every new error code | Changing product code to make a test pass |
+| Docs agent | Cheapest | Module playbooks, README, changelog, keeping docs in step with merged code | Deciding design questions |
+| Helper | Cheapest | Boilerplate, test scaffolds, finding files | Security or protocol logic |
 
-| Idea agent (strong) | Keeping `NEXT-UPDATES.md` and `05-vision.md` current; researching new options | Editing code or approved design docs |
-
-A task always goes to the cheapest tier that can do it safely. Work flows down; results are checked
-on the way back up.
+A task always goes to the cheapest agent that can do it safely. Work flows down; results are
+checked on the way back up. Reviewers never review their own work.
 
 ## Splitting work
 
@@ -47,7 +56,7 @@ Any agent may ask for sub-agents, but it must **propose the split first** and wa
    written by the requester before the split starts.
 3. The requester checks every result against the checklists before merging it.
 
-Lead proposes splits to the owner. Builders and the idea agent propose splits to the lead.
+Lead proposes splits to the owner. Every other agent proposes splits to the lead.
 
 ## The idea agent
 
@@ -74,6 +83,38 @@ Idea agent advanced checklist (when proposing a technology or a design change):
 3. State whether it works on both Windows and Android and offline.
 4. Mark it "verified" in Tech watch only after steps 1 to 3 are written down.
 
+## Specialist checklists
+
+Each specialist runs the shared basic checklist plus its own.
+
+**Security reviewer** · memory: `memory/security.md` (past findings, accepted risks)
+
+- Basic: which threat-table row does this change touch? Is there a test that fails if the
+  protection is removed? Are secrets kept out of logs and error text?
+- Advanced: try to break it as an unapproved device, as a removed device, and as a member reaching
+  outside a grant. Check every input from the network is size-limited and validated before use.
+  Update the threat table in `02-protocol.md` if a new threat appears.
+
+**Design reviewer** · memory: `memory/reviews.md` (questions that came up before)
+
+- Basic: could I plan this without asking anyone? List only gaps where a wrong guess matters.
+- Advanced: does it contradict an approved point, another design doc, or a logged decision? Does
+  any module now need to call upward?
+
+**Test agent** · memory: `memory/tests.md` (flaky tests, timing lessons)
+
+- Basic: every new behavior has a test; every new `RLY-` code has a test that triggers it; tests
+  use the fake clock, never real sleeps.
+- Advanced: add a `sim` scenario for each failure the change could meet (link drop, slow link,
+  peer restart, host loss). Run it 20 times to catch timing-dependent failures.
+
+**Docs agent** · memory: `memory/docs.md` (style rules, terms to use)
+
+- Basic: the module playbook matches the merged interface; `NEXT-UPDATES.md` changelog has a line;
+  links work.
+- Advanced: when a wire message or interface changed, update the diagrams in `docs/design/` and ask
+  the lead to confirm.
+
 ## Files
 
 ```
@@ -84,8 +125,12 @@ docs/agent/
   modules/<module>.md         per-module: purpose, interface, rules, its own checklist items
   memory/decisions.md         dated decisions and why
   memory/gotchas.md           things that went wrong once and how to avoid them
-  memory/ideas.md             idea agent's memory: ideas proposed, accepted, rejected, and why
-  idea-agent.md               idea agent playbook and its two checklists
+  memory/ideas.md             idea agent: ideas proposed, accepted, rejected, and why
+  memory/security.md          security reviewer: findings and accepted risks
+  memory/reviews.md           design reviewer: questions raised before
+  memory/tests.md             test agent: flaky tests, timing lessons
+  memory/docs.md              docs agent: style rules and terms
+  agents/<agent>.md           one playbook per specialist with its two checklists
 ```
 
 ## Basic checklist (every task)
