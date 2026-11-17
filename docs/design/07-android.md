@@ -107,9 +107,9 @@ flowchart LR
     classDef s3 fill:#FFD166,stroke:#1A1A2E,color:#1A1A2E,font-weight:bold
     classDef s4 fill:#FF6B35,stroke:#1A1A2E,color:#1A1A2E,font-weight:bold
     classDef opt fill:#FFFFFF,stroke:#999,color:#555,stroke-dasharray: 4 3
-    S0[S0 Builds<br/>core compiles, APK installs]:::s0 --> S1[S1 Reach<br/>phone pings PC]:::s1
-    S1 --> S2[S2 Stay alive<br/>screen off, app swiped]:::s2
-    S2 --> S3[S3 Files<br/>folder grant, big write]:::s3
+    S0["S0 Builds<br/>core compiles, APK installs"]:::s0 --> S1[S1 Reach<br/>phone pings PC]:::s1
+    S1 --> S2["S2 Stay alive<br/>screen off, app swiped"]:::s2
+    S2 --> S3["S3 Files<br/>folder grant, big write"]:::s3
     S3 --> S4[S4 Link change<br/>Wi-Fi off and on]:::s4
     S1 -.-> S5[S5 Discovery<br/>NSD vs beacon]:::opt
     S4 -.-> S6[S6 Phone as hotspot]:::opt
@@ -150,22 +150,24 @@ flowchart TB
     classDef core fill:#06D6A0,stroke:#1A1A2E,color:#1A1A2E,font-weight:bold
     classDef os fill:#073B4C,stroke:#FFD166,color:#FFFFFF
 
-    subgraph A[A · Tauri + our own Kotlin plugin — recommended]
+    subgraph A["A: Tauri and our own Kotlin plugin (recommended)"]
         direction TB
         A1[Web view UI]:::ui --> A2[relay-node in the app process]:::core
         A3[Our foreground service<br/>keeps the process alive]:::svc --> A2
     end
-    subgraph B[B · Tauri + third-party service plugin]
+    subgraph B["B: Tauri and a third-party service plugin"]
         direction TB
-        B1[Web view UI]:::ui --> B2[relay-node inside the plugin's service trait]:::core
+        B1[Web view UI]:::ui --> B2["relay-node inside the plugin service trait"]:::core
         B3[tauri-plugin-background-service]:::svc --> B2
     end
-    subgraph C[C · Fallback: core in its own service process]
+    subgraph C["C: Fallback, core in its own service process"]
         direction TB
-        C1[Any UI<br/>Tauri or native]:::ui -- local IPC --> C2[relay-node in a service process]:::core
+        C1[Any UI<br/>Tauri or native]:::ui -->|local IPC| C2[relay-node in a service process]:::core
         C3[Kotlin service loads the Rust library]:::svc --> C2
     end
-    A2 & B2 & C2 --> OS[Android: sockets, storage, network events]:::os
+    A2 --> OS["Android: sockets, storage, network events"]:::os
+    B2 --> OS
+    C2 --> OS
 ```
 
 | Option | For | Against |
