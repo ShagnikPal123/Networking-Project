@@ -49,8 +49,6 @@ name = "relay-discovery"
 version = "0.0.1"
 dependencies = [
  "relay-common",
- "relay-identity",
- "relay-proto",
  "thiserror",
 ]
 
@@ -109,9 +107,7 @@ name = "relay-session"
 version = "0.0.1"
 dependencies = [
  "relay-common",
- "relay-identity",
  "relay-link",
- "relay-proto",
  "thiserror",
 ]
 
@@ -124,6 +120,14 @@ dependencies = [
  "relay-proto",
  "relay-session",
  "relay-store",
+ "thiserror",
+]
+
+[[package]]
+name = "relay-sim"
+version = "0.0.1"
+dependencies = [
+ "relay-common",
  "thiserror",
 ]
 

@@ -13,6 +13,4 @@ workspace = true
 [dependencies]
 relay-common.workspace = true
 thiserror.workspace = true
-relay-identity.workspace = true
-relay-proto.workspace = true
 relay-link.workspace = true
