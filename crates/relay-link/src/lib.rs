@@ -13,7 +13,7 @@ pub const MODULE: Module = Module::Link;
 /// Heartbeat period on the active path.
 pub const ACTIVE_HEARTBEAT: Duration = Duration::from_millis(250);
 /// Heartbeat period on standby paths.
-pub const STANDBY_HEARTBEAT: Duration = Duration::from_secs(2);
+pub const STANDBY_HEARTBEAT: Duration = Duration::from_secs(1);
 /// Consecutive missed heartbeats before an active path becomes suspect.
 pub const MISSED_BEFORE_SUSPECT: u32 = 3;
 /// How long a suspect path may stay silent before it is declared down.
@@ -269,7 +269,7 @@ mod tests {
     #[test]
     fn timing_constants_match_design() {
         assert_eq!(ACTIVE_HEARTBEAT, Duration::from_millis(250));
-        assert_eq!(STANDBY_HEARTBEAT, Duration::from_secs(2));
+        assert_eq!(STANDBY_HEARTBEAT, Duration::from_secs(1));
         assert_eq!(MISSED_BEFORE_SUSPECT, 3);
         assert_eq!(DOWN_TIMEOUT, Duration::from_secs(2));
     }

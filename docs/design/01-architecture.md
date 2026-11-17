@@ -39,6 +39,7 @@ flowchart TB
     SH --> SS
     SH --> AU
     MB --> SS
+    MB --> AU
     SS --> LK
     TX & SH & MB & AU --> ST
     SS & DS & MB --> ID
@@ -73,6 +74,10 @@ types (`DeviceId`, `SiteId`, `Epoch`). It has no logic and no error prefix of it
 - **Calls go down** through small public interfaces (one interface file per module).
 - **News goes up** as events on a bus owned by `node` (`PeerFound`, `PathDown`, `JoinRequested`,
   `ChunkVerified`, `HostChanged`...). A module never calls a module above it.
+- **Rules go down as snapshots.** When a lower module needs a decision owned by a higher one, the
+  higher module hands down a snapshot or policy object. Example: `session` must reject removed
+  devices, so `membership` pushes the current roster and revocation list down into `session`'s
+  trust policy. `session` never asks `membership` anything.
 - A module that fails reports `Degraded` or `Down` to `node`. Modules that do not depend on it keep
   running. Example: if `discovery` is down, existing sessions and transfers continue.
 

@@ -17,3 +17,4 @@ relay-identity.workspace = true
 relay-proto.workspace = true
 relay-store.workspace = true
 relay-session.workspace = true
+relay-audit.workspace = true

@@ -4,7 +4,7 @@
 //! `docs/agent/modules/discovery.md`. Discovery only says "something is here"; it never grants
 //! trust (protocol section 2).
 
-use relay_common::{DeviceId, Epoch, ErrorCode, Module, RelayError, SiteId};
+use relay_common::{DeviceId, ErrorCode, Module, RelayError, SiteId};
 use std::net::SocketAddr;
 
 /// This crate's module tag, used in error codes and health reports.
@@ -47,16 +47,22 @@ impl RelayError for Error {
     }
 }
 
-/// The content of a UDP broadcast beacon: `{site ID, host device ID, epoch, port}`.
+/// Version of the beacon layout.
+pub const BEACON_VERSION: u8 = 1;
+
+/// The content of a UDP broadcast beacon. It is signed by the sending device's key.
+///
+/// It deliberately leaves out who the host is and the epoch: those travel only inside
+/// authenticated sessions.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct Beacon {
-    /// The site being announced.
-    pub site: SiteId,
-    /// The device currently acting as host.
-    pub host: DeviceId,
-    /// The host epoch; higher wins.
-    pub epoch: Epoch,
-    /// UDP port the host accepts sessions on.
+    /// Beacon layout version, [`BEACON_VERSION`].
+    pub version: u8,
+    /// The site the sender belongs to, or `None` before it has joined one.
+    pub site: Option<SiteId>,
+    /// The device sending the beacon.
+    pub device: DeviceId,
+    /// UDP port the sender accepts sessions on.
     pub port: u16,
 }
 

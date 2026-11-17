@@ -19,9 +19,10 @@ flowchart LR
 
 | | |
 |---|---|
-| Modules | identity, proto, store (config only), discovery, session, node, cli |
+| Modules | identity, proto, store (config only), discovery, link (one path only), session, node, cli |
 | Builds | Device keys and fingerprints · LAN discovery · one encrypted session between two machines · the `sim` test harness · module health and error codes |
-| Trust in P0 | Manual: each side pins the other's fingerprint with a command. Replaced by real joins in P2. |
+| Trust in P0 | Manual: each side pins the other's fingerprint with `relay trust <fingerprint>`. Session's trust policy is swapped for real membership in P2. |
+| Setup note | Relay needs one inbound UDP port. It asks before adding a Windows Firewall rule; it never changes settings silently. |
 | Exit test | On two Windows machines: `relay init`, `relay peers` shows the other one, `relay ping <peer>` gets an authenticated encrypted reply. |
 
 ## P1 — Transfer
@@ -37,16 +38,16 @@ flowchart LR
 | | |
 |---|---|
 | Modules | membership, share, audit, first desktop UI |
-| Builds | Site creation · host-approved joins with the 6-digit code · roster and revocation · per-folder grants · browsing · audit log · approval prompts in a desktop window |
-| Exit test | An unapproved device sees no roster and no files. An approved device browses a granted folder, is refused outside it, and both events are in the audit log. Editing the log is detected. |
+| Builds | Site creation and site-key recovery file · host-approved joins with the 6-digit code · roster and revocation · per-folder grants · browsing · audit log · approval prompts in a desktop window |
+| Exit test | An unapproved device sees no roster and no files. An approved device browses a granted folder, is refused outside it, and both events are in the audit log. Editing or trimming the log is detected through the signed checkpoints. |
 
 ## P3 — Self-heal
 
 | | |
 |---|---|
-| Modules | link (multi-path), membership (handoff) |
+| Modules | link (multi-path, warm standby), membership (handoff) |
 | Builds | Path discovery across interfaces · heartbeats and scoring · failover · host-run hotspot · planned handoff · deputy takeover |
-| Exit test (**the resume demo**) | A transfer runs over Wi-Fi. Wi-Fi is switched off. The transfer continues on Ethernet or the hotspot within 3 seconds and the file hash matches. Then the host is shut down and a deputy becomes host without the owner touching anything. |
+| Exit test (**the resume demo**) | A transfer runs over Wi-Fi. Wi-Fi is switched off. The transfer continues on Ethernet within 3 seconds (the phone hotspot is the third path, tested separately) and the file hash matches. Then the host is shut down and a deputy becomes host without the owner touching anything. |
 
 ## Roadmap (after P3, not designed yet)
 

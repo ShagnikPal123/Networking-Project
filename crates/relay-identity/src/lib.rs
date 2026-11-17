@@ -150,7 +150,7 @@ impl fmt::Display for Fingerprint {
     }
 }
 
-/// Signed by the site key: names the current host and its deputies.
+/// Signed by the site key: names the current host.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct HostCertificate {
     /// The site this certificate belongs to.
@@ -159,10 +159,24 @@ pub struct HostCertificate {
     pub host: DeviceId,
     /// Host-change counter; the higher epoch wins.
     pub epoch: Epoch,
-    /// Devices the owner pre-approved to take over, in priority order.
-    pub deputies: Vec<DeviceId>,
     /// Expiry as seconds since the Unix epoch.
     pub expiry: u64,
+}
+
+/// Signed by the site key: the owner's approval, given in advance, for one device to take over
+/// from one specific host at one specific epoch. Useless after any other handoff.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct DeputyCertificate {
+    /// The site this certificate belongs to.
+    pub site: SiteId,
+    /// The device allowed to take over.
+    pub deputy: DeviceId,
+    /// The host this deputy may replace.
+    pub replaces_host: DeviceId,
+    /// The epoch of the host being replaced; the deputy becomes host at the next epoch.
+    pub replaces_epoch: Epoch,
+    /// Position in the owner's list; lower wins if two deputies step up.
+    pub priority: u8,
 }
 
 /// Signed by the host key: says a device is an approved member.
