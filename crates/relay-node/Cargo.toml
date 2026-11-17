@@ -1,0 +1,21 @@
+[package]
+name = "relay-node"
+description = "Starts modules, routes events, reports health. No protocol logic."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+relay-common.workspace = true
+thiserror.workspace = true
+relay-discovery.workspace = true
+relay-session.workspace = true
+relay-membership.workspace = true
+relay-transfer.workspace = true
+relay-share.workspace = true
+relay-audit.workspace = true

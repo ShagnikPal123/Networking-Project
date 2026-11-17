@@ -28,6 +28,18 @@ two machines that keeps going when the link under it is pulled.
 | 7 | File browsing needs a per-folder grant and is written to an audit log. |
 | 8 | Works offline. |
 
+## Owner's answers (2026-11-17)
+
+| Topic | Answer |
+|-------|--------|
+| Who it is for | Both a resume project and something real people use. Mainly resume experience. |
+| Inspiration | Poor Wi-Fi in the owner's area, and enterprise AI networking. Start small, build up. |
+| Test hardware | 2 Windows PCs and 1 phone. |
+| Internet | An optional extra. Never required. |
+| Trust model | Friendly site: members are people the host knows. Protect against outsiders and mistakes, not hostile insiders. |
+| Look | Very dark blacks or Windows-like, with an Apple-style finish. No default purple. |
+| Agents | May push to GitHub branches on their own. Nothing touches the owner's computer or its settings without asking first. |
+
 ## Goals
 
 - Two Windows machines find each other on a LAN with no setup beyond approving the join.

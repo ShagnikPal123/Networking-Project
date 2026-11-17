@@ -1,0 +1,18 @@
+[package]
+name = "relay-transfer"
+description = "Manifests, chunks, verify, resume."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+relay-common.workspace = true
+thiserror.workspace = true
+relay-proto.workspace = true
+relay-store.workspace = true
+relay-session.workspace = true

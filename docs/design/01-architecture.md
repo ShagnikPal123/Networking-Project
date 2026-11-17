@@ -65,6 +65,9 @@ Layers, top to bottom: **UI** (orange) · **node** (yellow) · **features** (gre
 | ND | node | Starts modules, routes events, reports health | Contain protocol logic |
 | UI | cli / app | Showing state, collecting approvals | Bypass node to call modules |
 
+`relay-common` sits under everything: module tags, error codes, health states, and the shared ID
+types (`DeviceId`, `SiteId`, `Epoch`). It has no logic and no error prefix of its own.
+
 ## How modules talk
 
 - **Calls go down** through small public interfaces (one interface file per module).
