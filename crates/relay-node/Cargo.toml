@@ -15,6 +15,7 @@ relay-common.workspace = true
 thiserror.workspace = true
 relay-discovery.workspace = true
 relay-session.workspace = true
+relay-link.workspace = true
 relay-membership.workspace = true
 relay-transfer.workspace = true
 relay-share.workspace = true

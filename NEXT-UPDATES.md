@@ -14,9 +14,9 @@ Last updated: 2026-11-17
 | Module interfaces for P0 crates, `relay-sim` harness | P0 | Done (interfaces and pure logic only) |
 | Agent system files (`CLAUDE.md`, `docs/agent/`) | pre-P0 | Done |
 | Test plan and phone plan | pre-P0 | Done (`docs/testing/`, `docs/design/07-android.md`) |
-| P0 implementation plan | P0 | In progress |
-| UI mockup and UI design doc | P2 | In progress |
-| Tech watch research | pre-P0 | In progress |
+| P0 implementation plan (`docs/plans/2026-11-17-p0-foundation.md`) | P0 | Written, waiting for owner review |
+| UI mockup and UI design doc | P2 | Not started (own thread) |
+| Tech watch research | pre-P0 | Not started (own thread) |
 
 ## Next (P0 to P3, in order)
 
@@ -82,3 +82,4 @@ influence the design.
 | 2026-11-17 | File created. Stack chosen: Rust core + Tauri app. Design docs drafted. |
 | 2026-11-17 | Workspace skeleton, P0 interfaces, sim harness, agent files, test plan, phone plan added. |
 | 2026-11-17 | Protocol revised after design review: commit-then-reveal join code, deputy certificates bound to host and epoch, failover at Suspect with warm standby, per-chunk hash list, signed audit checkpoints, trust policy pushed down into session. |
+| 2026-11-17 | P0 implementation plan written: 10 tasks, library versions checked on crates.io. |

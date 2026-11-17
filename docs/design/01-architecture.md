@@ -35,6 +35,7 @@ flowchart TB
     CLI --> ND
     APP --> ND
     ND --> TX & SH & MB & AU & DS
+    ND --> SS & LK
     TX --> SS
     SH --> SS
     SH --> AU
