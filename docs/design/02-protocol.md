@@ -45,6 +45,16 @@ roster are **not** in the beacon; they travel only inside authenticated sessions
 **What an outsider on the same network can learn:** that Relay devices exist, their addresses, and
 their device IDs. Not names, roles, the roster, or anything about files.
 
+Beacon details (built in `relay-discovery`, layout in `crates/relay-discovery/src/wire.rs`):
+
+- **Port 47470** by default **(call)**. It is a setting (`BeaconConfig`), not a fixed value.
+- **Signing goes through hooks** **(call)**. The node hands discovery a signer and a verifier
+  (`BeaconSigner`, `BeaconVerifier`) backed by the identity module. Discovery never holds a
+  secret key.
+- One fixed 176-byte datagram. Anything else is dropped: wrong size, wrong version, bad
+  signature, a key that does not belong to the named host, or the device's own beacon.
+- A sighting is the sender's IP address plus the session port from the beacon.
+
 ## 3. Joining (module MB)
 
 ```mermaid
