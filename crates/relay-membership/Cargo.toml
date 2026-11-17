@@ -1,0 +1,20 @@
+[package]
+name = "relay-membership"
+description = "Join requests, approvals, roster, host certificate, handoff."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+relay-common.workspace = true
+thiserror.workspace = true
+relay-identity.workspace = true
+relay-proto.workspace = true
+relay-store.workspace = true
+relay-session.workspace = true
+relay-audit.workspace = true

@@ -1,0 +1,15 @@
+[package]
+name = "relay-identity"
+description = "Device keys, site keys, certificates, chain checks. No network."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+relay-common.workspace = true
+thiserror.workspace = true

@@ -1,0 +1,19 @@
+[package]
+name = "relay-cli"
+description = "Command-line front end for Relay. Talks only to relay-node."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[[bin]]
+name = "relay"
+path = "src/main.rs"
+
+[lints]
+workspace = true
+
+[dependencies]
+relay-common.workspace = true
+relay-node.workspace = true

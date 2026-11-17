@@ -1,0 +1,32 @@
+[workspace]
+resolver = "2"
+members = ["crates/*"]
+
+[workspace.package]
+version = "0.0.1"
+edition = "2021"
+rust-version = "1.80"
+license = "MIT"
+repository = "https://github.com/ShagnikPal123/Networking-Project"
+
+[workspace.dependencies]
+thiserror = "2"
+relay-common = { path = "crates/relay-common" }
+relay-identity = { path = "crates/relay-identity" }
+relay-proto = { path = "crates/relay-proto" }
+relay-store = { path = "crates/relay-store" }
+relay-discovery = { path = "crates/relay-discovery" }
+relay-link = { path = "crates/relay-link" }
+relay-session = { path = "crates/relay-session" }
+relay-membership = { path = "crates/relay-membership" }
+relay-transfer = { path = "crates/relay-transfer" }
+relay-share = { path = "crates/relay-share" }
+relay-audit = { path = "crates/relay-audit" }
+relay-node = { path = "crates/relay-node" }
+
+[workspace.lints.rust]
+unsafe_code = "forbid"
+missing_docs = "warn"
+
+[workspace.lints.clippy]
+all = { level = "warn", priority = -1 }
